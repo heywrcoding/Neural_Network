@@ -3,33 +3,90 @@ package NeuralNet.Neuron;
 import java.util.ArrayList;
 
 public class Neuron {
-    private ArrayList<Double> inputWeight;
-    private ArrayList<Double> outputWeight;
-    private int inputLinkNum;
-    private int outputLinkNum;
+    private ArrayList<Double> listOfWeightIn;
+    private ArrayList<Double> listOfWeightOut;
+    private int numberOfInputs;
+    private int numberOfOutputs;
+    private double value;
 
-    Neuron(int inputLinkNum, int outputLinkNum) {
-        this.inputLinkNum = inputLinkNum;
-        this.outputLinkNum = outputLinkNum;
-        inputWeight = new ArrayList<>(inputLinkNum);
-        outputWeight = new ArrayList<>(outputLinkNum);
+    public Neuron() {
+
+    }
+
+    public Neuron(int inputLinkNum, int outputLinkNum) {
+        this.numberOfInputs = inputLinkNum;
+        this.numberOfOutputs = outputLinkNum;
+        listOfWeightIn = new ArrayList<>(inputLinkNum);
+        listOfWeightOut = new ArrayList<>(outputLinkNum);
     }
 
     public void initNeuron() {
-        for (int i = 0; i < inputLinkNum; i++) {
-            inputWeight.set(i, Math.random());
-        }
-
-        for (int i = 0; i < outputLinkNum; i++) {
-            outputWeight.set(i, Math.random());
-        }
+//        for (int i = 0; i < numberOfInputs; i++) {
+//            listOfWeightIn.set(i, Math.random());
+//        }
+//
+//        for (int i = 0; i < numberOfOutputs; i++) {
+//            listOfWeightOut.set(i, Math.random());
+//        }
     }
 
-    public void setInputWeight(ArrayList<Double> inputWeight) {
-        this.inputWeight = inputWeight;
+    public ArrayList<Double> derivativeBatch(ArrayList<ArrayList<Double>> inputData) {
+        return new ArrayList<Double>();
     }
 
-    public void setOutputWeight(ArrayList<Double> outputWeight) {
-        this.outputWeight = outputWeight;
+    public double derivative(ArrayList<Double> inputData) {
+        return 0.5;
+    }
+
+    public void updateWeight(int index, double newWeight) {
+        listOfWeightIn.set(index, newWeight);
+    }
+
+//    /**
+//     * Calculate value of neuron.
+//     * @param activeFuncFlag
+//     * 0 for Sigmoid, 1 for hyperbolicTangent, 2 for hardLimitingThreshold, 3 for linear, 4 for rectifiedLinear.
+//     */
+//    public void calcValue(int activeFuncFlag) {
+//        switch (activeFuncFlag) {
+//            case 0:
+//                value
+//        }
+//    }
+
+//    private double summingFunc() {
+//
+//    }
+
+    public void setListOfWeightIn(ArrayList<Double> inputWeights) {
+        this.listOfWeightIn = inputWeights;
+    }
+
+    public void setListOfWeightOut(ArrayList<Double> outputWeights) {
+        this.listOfWeightOut = outputWeights;
+    }
+
+    public int getNumberOfInputs() {
+        return numberOfInputs;
+    }
+
+    public int getNumberOfOutputs() {
+        return numberOfOutputs;
+    }
+
+    public ArrayList<Double> getListOfWeightIn() {
+        return listOfWeightIn;
+    }
+
+    public double getWeight(int index) {
+        return listOfWeightIn.get(index);
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
     }
 }
