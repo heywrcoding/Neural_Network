@@ -21,13 +21,13 @@ public class Neuron {
     }
 
     public void initNeuron() {
-//        for (int i = 0; i < numberOfInputs; i++) {
-//            listOfWeightIn.set(i, Math.random());
-//        }
-//
-//        for (int i = 0; i < numberOfOutputs; i++) {
-//            listOfWeightOut.set(i, Math.random());
-//        }
+        for (int i = 0; i < numberOfInputs; i++) {
+            listOfWeightIn.set(i, Math.random());
+        }
+
+        for (int i = 0; i < numberOfOutputs; i++) {
+            listOfWeightOut.set(i, Math.random());
+        }
     }
 
     public ArrayList<Double> derivativeBatch(ArrayList<ArrayList<Double>> inputData) {
@@ -64,6 +64,14 @@ public class Neuron {
 
     public void setListOfWeightOut(ArrayList<Double> outputWeights) {
         this.listOfWeightOut = outputWeights;
+    }
+
+    public void setNumberOfInputs(int numberOfInputs) {
+        this.numberOfInputs = numberOfInputs;
+    }
+
+    public void setNumberOfOutputs(int numberOfOutputs) {
+        this.numberOfOutputs = numberOfOutputs;
     }
 
     public int getNumberOfInputs() {
