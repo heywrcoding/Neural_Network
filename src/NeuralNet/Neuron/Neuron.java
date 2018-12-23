@@ -1,5 +1,7 @@
 package NeuralNet.Neuron;
 
+import NeuralNet.Utils.ActivationFunc;
+
 import java.util.ArrayList;
 
 public class Neuron {
@@ -10,7 +12,7 @@ public class Neuron {
     private double value;
 
     public Neuron() {
-
+        //this(0,0);
     }
 
     public Neuron(int inputLinkNum, int outputLinkNum) {
@@ -22,16 +24,28 @@ public class Neuron {
 
     public void initNeuron() {
         for (int i = 0; i < numberOfInputs; i++) {
-            listOfWeightIn.set(i, Math.random());
+            listOfWeightIn.add(i, Math.random());
         }
 
         for (int i = 0; i < numberOfOutputs; i++) {
-            listOfWeightOut.set(i, Math.random());
+            listOfWeightOut.add(i, Math.random());
         }
     }
 
     public ArrayList<Double> derivativeBatch(ArrayList<ArrayList<Double>> inputData) {
-        return new ArrayList<Double>();
+        ArrayList<Double> derivativeOfSigmoid =  new ArrayList<>();
+
+        for (int i = 0; i < inputData.size(); i++) {
+            Double sum = 0.0;
+
+            for (int j = 0; j < inputData.get(0).size(); j++) {
+                sum += inputData.get(i).get(j) * listOfWeightIn.get(j);
+            }
+
+            derivativeOfSigmoid.add(i, ActivationFunc.sigmoidDerivative(sum));
+        }
+
+        return derivativeOfSigmoid;
     }
 
     public double derivative(ArrayList<Double> inputData) {
@@ -58,20 +72,22 @@ public class Neuron {
 //
 //    }
 
-    public void setListOfWeightIn(ArrayList<Double> inputWeights) {
-        this.listOfWeightIn = inputWeights;
-    }
-
-    public void setListOfWeightOut(ArrayList<Double> outputWeights) {
-        this.listOfWeightOut = outputWeights;
-    }
+//    public void setListOfWeightIn(ArrayList<Double> inputWeights) {
+//        this.listOfWeightIn = inputWeights;
+//    }
+//
+//    public void setListOfWeightOut(ArrayList<Double> outputWeights) {
+//        this.listOfWeightOut = outputWeights;
+//    }
 
     public void setNumberOfInputs(int numberOfInputs) {
         this.numberOfInputs = numberOfInputs;
+        this.listOfWeightIn = new ArrayList<>(numberOfInputs);
     }
 
     public void setNumberOfOutputs(int numberOfOutputs) {
         this.numberOfOutputs = numberOfOutputs;
+        this.listOfWeightOut = new ArrayList<>(numberOfOutputs);
     }
 
     public int getNumberOfInputs() {

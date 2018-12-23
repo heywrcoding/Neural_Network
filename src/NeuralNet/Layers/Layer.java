@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Layer {
 
-    private ArrayList<Neuron> listOfNeurons;
+    private ArrayList<Neuron> listOfNeurons = new ArrayList<>();
     int numberOfNeuronsInLayer;
 
     Layer(int numberOfNeuronsInLayer) {
@@ -24,10 +24,17 @@ public class Layer {
     }
 
     //default: sigmoid
-    public void calcNeuronValueInThisLayer(Layer lastLayer) {
+    public ArrayList<Double> calcNeuronValueInThisLayer(Layer lastLayer) {
+        ArrayList<Double> arrayList = new ArrayList<>();
+
         for (Neuron neuron: listOfNeurons) {
-            neuron.setValue(ActivationFunc.sigmoid(summing(lastLayer, neuron.getListOfWeightIn())));
+            double value = ActivationFunc.sigmoid(summing(lastLayer, neuron.getListOfWeightIn()));
+
+            neuron.setValue(value);
+            arrayList.add(value);
         }
+
+        return arrayList;
     }
 
     private double summing(Layer lastLayer, ArrayList<Double> inputWeight) {

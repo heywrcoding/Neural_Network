@@ -6,6 +6,10 @@ public class ActivationFunc {
         return 1/(1 + Math.exp(-x));
     }
 
+    static public double sigmoidDerivative(double x) {
+        return sigmoid(x) * (1 - sigmoid(x));
+    }
+
     static public double hyperbolicTangent(double x) {
         return (1 - Math.exp(-x))/(1 + Math.exp(-x));
     }

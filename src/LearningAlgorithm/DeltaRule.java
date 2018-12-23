@@ -37,6 +37,9 @@ public class DeltaRule extends LearningAlgorithm {
     private ArrayList<ArrayList<ArrayList<Double>>> newWeights;
     
     public DeltaRule(NeuralNet _neuralNet){
+
+        this.learningMode = LearningMode.BATCH;
+
         this.learningParadigm = LearningParadigm.SUPERVISED;
         this.neuralNet=_neuralNet;
         this.newWeights=new ArrayList<>();
@@ -63,7 +66,7 @@ public class DeltaRule extends LearningAlgorithm {
                     numberOfInputsInNeuron=this.neuralNet.getOutputLayer()
                             .getNeuron(j).getNumberOfInputs();
                     this.newWeights.get(l).add(new ArrayList<Double>());
-                    for(int i=0;i<=numberOfInputsInNeuron;i++){
+                    for(int i=0;i<=numberOfInputsInNeuron;i++){ //可能有错
                         this.newWeights.get(l).get(j).add(0.0);
                     }
                 }
@@ -144,7 +147,7 @@ public class DeltaRule extends LearningAlgorithm {
             throw new NeuralException("Delta rule can be used only with single" + " layer neural network");
         }
         else{
-            Double deltaWeight=LearningRate;
+            Double deltaWeight = LearningRate;
             Neuron currNeuron = neuralNet.getOutputLayer().getNeuron(neuron);
             switch(learningMode){
                 case BATCH:
@@ -153,21 +156,21 @@ public class DeltaRule extends LearningAlgorithm {
                             .derivativeBatch(trainingDataSet
                                     .getArrayInputData());
                     ArrayList<Double> _ithInput;
-                    if(input<currNeuron.getNumberOfInputs()){
-                        _ithInput=trainingDataSet.getIthInputArrayList(input);
+                    if(input < currNeuron.getNumberOfInputs()){
+                        _ithInput = trainingDataSet.getIthInputArrayList(input);
                     }
                     else{
-                        _ithInput=new ArrayList<>();
-                        for(int i=0;i<trainingDataSet.numberOfRecords;i++){
+                        _ithInput = new ArrayList<>();
+                        for(int i = 0;i < trainingDataSet.numberOfRecords; i++){
                             _ithInput.add(1.0);
                         }
                     }
                     Double multDerivResultIthInput=0.0;
                     for(int i=0;i<trainingDataSet.numberOfRecords;i++){
-                        multDerivResultIthInput+=error.get(i).get(neuron)*
-                                derivativeResult.get(i)*_ithInput.get(i);
+                        multDerivResultIthInput += error.get(i).get(neuron)*
+                                derivativeResult.get(i) * _ithInput.get(i);
                     }
-                    deltaWeight*=multDerivResultIthInput;
+                    deltaWeight *= multDerivResultIthInput;
                     break;
                 case ONLINE:
                     deltaWeight*=error.get(currentRecord).get(neuron);
@@ -244,7 +247,8 @@ public class DeltaRule extends LearningAlgorithm {
                     while(epoch<MaxEpochs && overallGeneralError>MinOverallError){
                         epoch++;                        
                         for(int j=0;j<neuralNet.getNumberOfOutputs();j++){
-                            for(int i=0;i<=neuralNet.getNumberOfInputs();i++){
+                            //not consider bias
+                            for(int i=0;i<neuralNet.getNumberOfInputs();i++){
                                 //weightUpdate(0, i, j,overallError.get(j));
                                 newWeights.get(0).get(j).set(i, calcNewWeight(0,i,j));
                             }
@@ -312,8 +316,9 @@ public class DeltaRule extends LearningAlgorithm {
                 numberOfNeuronsInLayer=ol.getNumberOfNeuronsInLayer();
                 for(int j=0;j<numberOfNeuronsInLayer;j++){
                     numberOfInputsInNeuron=ol.getNeuron(j).getNumberOfInputs();
-                    
-                    for(int i=0;i<=numberOfInputsInNeuron;i++){
+
+                    //not consider bias
+                    for(int i=0;i<numberOfInputsInNeuron;i++){
                         double newWeight=this.newWeights.get(l).get(j).get(i);
                         ol.getNeuron(j).updateWeight(i, newWeight);
                     }
@@ -378,6 +383,10 @@ public class DeltaRule extends LearningAlgorithm {
                                         .get(j)));
                 }
             }
+
+            myUtils.caveTest("DeltaRule.forward.generalError(loss function array)", generalError, LearningAlgorithm.printTraining);
+            myUtils.caveTest("DeltaRule.forward.error(YT-Y array)", error, LearningAlgorithm.printTraining);
+
             for(int j=0;j<neuralNet.getNumberOfOutputs();j++){
                 overallError.set(j, 
                         overallError(trainingDataSet
@@ -385,10 +394,15 @@ public class DeltaRule extends LearningAlgorithm {
                                 , trainingDataSet
                                         .getIthNeuralOutputArrayList(j)));
             }
+
+            myUtils.caveTest("DeltaRule.forward.overallError", overallError, LearningAlgorithm.printTraining);
+
             overallGeneralError=overallGeneralErrorArrayList(
                     trainingDataSet.getArrayTargetOutputData()
                     ,trainingDataSet.getArrayNeuralOutputData());
             //simpleError=simpleErrorEach.get(trainingDataSet.numberOfRecords-1);
+
+            myUtils.caveTest("DeltaRule.forward.overallGeneralError", overallGeneralError, LearningAlgorithm.printTraining);
         }
     }
     
@@ -502,7 +516,7 @@ public class DeltaRule extends LearningAlgorithm {
     }
     
     public Double generalError(ArrayList<Double> YT,ArrayList<Double> Y){
-        int Ny=YT.size();
+        int Ny=YT.size(); //number of neurons in output layer
         Double result=0.0;
         for(int i=0;i<Ny;i++){
             result+=Math.pow(YT.get(i)-Y.get(i), degreeGeneralError);
@@ -511,6 +525,8 @@ public class DeltaRule extends LearningAlgorithm {
             result*=(1.0/Ny);
         else
             result*=(1.0/degreeGeneralError);
+
+//        myUtils.caveTest("DeltaRule.generalError(loss function)", result);
         return result;
     }
     
@@ -554,6 +570,7 @@ public class DeltaRule extends LearningAlgorithm {
     }
    
     public Double simpleError(Double YT,Double Y){
+//        myUtils.caveTest("DeltaRule.simpleError(YT-Y)", YT-Y);
         return YT-Y;
     }
     

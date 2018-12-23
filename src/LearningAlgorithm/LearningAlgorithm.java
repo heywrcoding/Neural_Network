@@ -12,7 +12,7 @@ public abstract class LearningAlgorithm {
     
     protected NeuralNet neuralNet;
     
-    protected int MaxEpochs=100;
+    protected int MaxEpochs=1000;
     
     protected int epoch=0;
     
@@ -26,7 +26,7 @@ public abstract class LearningAlgorithm {
     
     protected NeuralDataSet validatingDataSet;
     
-    public boolean printTraining=false;
+    public static boolean printTraining = true;
 
     protected LearningMode learningMode;
     public LearningParadigm learningParadigm;

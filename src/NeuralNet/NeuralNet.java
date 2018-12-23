@@ -1,6 +1,7 @@
 package NeuralNet;
 
 import NeuralNet.Layers.*;
+import NeuralNet.Neuron.Neuron;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,13 @@ public class NeuralNet {
     private ArrayList<Double> inputs;
     private ArrayList<Double> outputs;
 
-    private double[][] trainSet;
-    private double[] realOutputSet;
+//    private double[][] trainSet;
+//    private double[] realOutputSet;
 
     public NeuralNet(int numberOfInputs, int numberOfHiddenLayers, int numberOfNeuronsInHiddenLayer, int numberOfOutputs) {
+        this.numberOfInputs = numberOfInputs;
+        this.numberOfOutputs = numberOfOutputs;
+
         inputLayer = new InputLayer(numberOfInputs);
         this.numberOfHiddenLayers = numberOfHiddenLayers;
         outputLayer = new OutputLayer(numberOfOutputs);
@@ -33,16 +37,25 @@ public class NeuralNet {
         for (int i = 0; i < numberOfHiddenLayers; i++) {
             for (int j = 0; j < listOfHiddenLayer.get(i).getNumberOfNeuronsInLayer(); j++) {
                 //set number of inputs in neuron
-                if (i == 0)
+                if (i == 0) {
                     listOfHiddenLayer.get(i).getNeuron(j).setNumberOfInputs(numberOfInputs);
-                else
+//                    listOfHiddenLayer.get(i).getNeuron(j).setListOfWeightIn(new ArrayList<>(numberOfInputs));
+                }
+                else {
                     listOfHiddenLayer.get(i).getNeuron(j).setNumberOfInputs(numberOfNeuronsInHiddenLayer);
+//                    listOfHiddenLayer.get(i).getNeuron(j).setListOfWeightIn(new ArrayList<>(numberOfNeuronsInHiddenLayer));
+                }
 
                 //set number of outputs in neuron
-                if (i == numberOfHiddenLayers - 1)
+                if (i == numberOfHiddenLayers - 1) {
                     listOfHiddenLayer.get(i).getNeuron(j).setNumberOfOutputs(numberOfOutputs);
-                else
+//                    listOfHiddenLayer.get(i).getNeuron(j).setListOfWeightOut(new ArrayList<>(numberOfOutputs));
+                }
+                else {
                     listOfHiddenLayer.get(i).getNeuron(j).setNumberOfOutputs(numberOfNeuronsInHiddenLayer);
+//                    listOfHiddenLayer.get(i).getNeuron(j).setListOfWeightOut(new ArrayList<>(numberOfNeuronsInHiddenLayer));
+
+                }
 
                 //init neuron weight
                 listOfHiddenLayer.get(i).getNeuron(j).initNeuron();
@@ -51,13 +64,18 @@ public class NeuralNet {
 
         for (int j = 0; j < outputLayer.getNumberOfNeuronsInLayer(); j++) {
             //set number of inputs in neuron
-            if (numberOfHiddenLayers == 0)
+            if (numberOfHiddenLayers == 0) {
                 outputLayer.getNeuron(j).setNumberOfInputs(numberOfInputs);
-            else
+//                outputLayer.getNeuron(j).setListOfWeightIn(new ArrayList<>(numberOfInputs));
+            }
+            else {
                 outputLayer.getNeuron(j).setNumberOfInputs(numberOfNeuronsInHiddenLayer);
+//                outputLayer.getNeuron(j).setListOfWeightIn(new ArrayList<>(numberOfNeuronsInHiddenLayer));
+            }
 
             //set number of outputs in neuron
             outputLayer.getNeuron(j).setNumberOfOutputs(numberOfOutputs);
+//            outputLayer.getNeuron(j).setListOfWeightOut(new ArrayList<>(numberOfOutputs));
 
             //init neuron weight
             outputLayer.getNeuron(j).initNeuron();
@@ -74,6 +92,9 @@ public class NeuralNet {
     }
 
     public void calc() {
+        setInputToInputLayer();
+
+        //calc
         if (numberOfHiddenLayers != 0) {
             //calc hidden layers
             for (int i = 0; i < numberOfHiddenLayers; i++) {
@@ -84,21 +105,30 @@ public class NeuralNet {
             }
 
             //calc output layer
-            outputLayer.calcNeuronValueInThisLayer(listOfHiddenLayer.get(numberOfHiddenLayers - 1));
+            outputs = outputLayer.calcNeuronValueInThisLayer(listOfHiddenLayer.get(numberOfHiddenLayers - 1));
         }
         else {
-            outputLayer.calcNeuronValueInThisLayer(inputLayer);
+            outputs = outputLayer.calcNeuronValueInThisLayer(inputLayer);
+        }
+    }
+
+    private void setInputToInputLayer() {
+        int index = 0;
+
+        for (Neuron neuron: inputLayer.getListOfNeurons()) {
+            neuron.setValue(inputs.get(index));
+            index++;
         }
     }
 
 
-    public void setTrainSet(double[][] trainSet) {
-        this.trainSet = trainSet;
-    }
-
-    public void setRealOutputSet(double[] realOutputSet) {
-        this.realOutputSet = realOutputSet;
-    }
+//    public void setTrainSet(double[][] trainSet) {
+//        this.trainSet = trainSet;
+//    }
+//
+//    public void setRealOutputSet(double[] realOutputSet) {
+//        this.realOutputSet = realOutputSet;
+//    }
 
     public void setInputLayer(InputLayer inputLayer) {
         this.inputLayer = inputLayer;
