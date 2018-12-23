@@ -12,10 +12,10 @@ public class Neuron {
     private double value;
 
     public Neuron() {
-        //this(0,0);
+        this(0,0);
     }
 
-    public Neuron(int inputLinkNum, int outputLinkNum) {
+    Neuron(int inputLinkNum, int outputLinkNum) {
         this.numberOfInputs = inputLinkNum;
         this.numberOfOutputs = outputLinkNum;
         listOfWeightIn = new ArrayList<>(inputLinkNum);
@@ -56,29 +56,15 @@ public class Neuron {
         listOfWeightIn.set(index, newWeight);
     }
 
-//    /**
-//     * Calculate value of neuron.
-//     * @param activeFuncFlag
-//     * 0 for Sigmoid, 1 for hyperbolicTangent, 2 for hardLimitingThreshold, 3 for linear, 4 for rectifiedLinear.
-//     */
-//    public void calcValue(int activeFuncFlag) {
-//        switch (activeFuncFlag) {
-//            case 0:
-//                value
-//        }
-//    }
+    public void printNeuron() {
+        System.out.println("- Value of this neuron is: " + value);
+        if (listOfWeightIn.size() != 0) {
+            for (int i = 0; i < listOfWeightIn.size(); i++) {
+                System.out.println("- Input Weight " + i + " : " + listOfWeightIn.get(i));
+            }
+        }
 
-//    private double summingFunc() {
-//
-//    }
-
-//    public void setListOfWeightIn(ArrayList<Double> inputWeights) {
-//        this.listOfWeightIn = inputWeights;
-//    }
-//
-//    public void setListOfWeightOut(ArrayList<Double> outputWeights) {
-//        this.listOfWeightOut = outputWeights;
-//    }
+    }
 
     public void setNumberOfInputs(int numberOfInputs) {
         this.numberOfInputs = numberOfInputs;

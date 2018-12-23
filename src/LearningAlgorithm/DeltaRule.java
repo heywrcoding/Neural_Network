@@ -506,7 +506,7 @@ public class DeltaRule extends LearningAlgorithm {
             if(generalErrorMeasurement==ErrorMeasurement.MSE)
                 result+=Math.pow((1.0/Ny)*resultY,degreeOverallError);
             else
-                result+=Math.pow((1.0/degreeGeneralError)*resultY,degreeOverallError);
+                result+=Math.pow((1.0/degreeGeneralError)*resultY,degreeGeneralError);
         }
         if(overallErrorMeasurement==ErrorMeasurement.MSE)
             result*=(1.0/N);

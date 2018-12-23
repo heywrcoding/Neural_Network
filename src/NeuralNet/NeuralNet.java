@@ -85,9 +85,15 @@ public class NeuralNet {
 
     public void printNet() {
         inputLayer.printLayer();
-        for (HiddenLayer hiddenLayer: listOfHiddenLayer) {
-            hiddenLayer.printLayer();
+        if (numberOfHiddenLayers != 0)
+            for (HiddenLayer hiddenLayer: listOfHiddenLayer) {
+                hiddenLayer.printLayer();
+            }
+        else {
+            System.out.println("-------------No Hidden Layer.-----------------");
+
         }
+
         outputLayer.printLayer();
     }
 

@@ -1,5 +1,7 @@
 package NeuralNet.Layers;
 
+import NeuralNet.Neuron.Neuron;
+
 public class HiddenLayer extends Layer{
     public HiddenLayer(int numberOfNeuronsInLayer) {
         super(numberOfNeuronsInLayer);
@@ -8,8 +10,13 @@ public class HiddenLayer extends Layer{
     @Override
     public void printLayer() {
         System.out.println("-----------This is Hidden Layer.--------------");
-        System.out.println(numberOfNeuronsInLayer + " neurons are in this Layer.");
+        System.out.println("There are " + numberOfNeuronsInLayer + " neurons in this Layer.");
 
-        System.out.println("----------------------------------------------");
+        int index = 0;
+        for (Neuron neuron: getListOfNeurons()) {
+            System.out.println("Neuron " + index + " :");
+            neuron.printNeuron();
+            index++;
+        }
     }
 }

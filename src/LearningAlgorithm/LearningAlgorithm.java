@@ -12,11 +12,11 @@ public abstract class LearningAlgorithm {
     
     protected NeuralNet neuralNet;
     
-    protected int MaxEpochs=1000;
+    protected int MaxEpochs=100;
     
     protected int epoch=0;
     
-    protected double MinOverallError=0.001;
+    protected double MinOverallError=0.0000001;
     
     protected double LearningRate=0.1;
     

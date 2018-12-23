@@ -1,5 +1,7 @@
 package NeuralNet.Layers;
 
+import NeuralNet.Neuron.Neuron;
+
 public class OutputLayer extends Layer {
     public OutputLayer(int numberOfNeuronsInLayer) {
         super(numberOfNeuronsInLayer);
@@ -8,8 +10,17 @@ public class OutputLayer extends Layer {
     @Override
     public void printLayer() {
         System.out.println("-----------This is Output Layer.--------------");
-        System.out.println(numberOfNeuronsInLayer + " neurons are in this Layer.");
+        if (numberOfNeuronsInLayer > 1)
+            System.out.println("There are " + numberOfNeuronsInLayer + " neurons in this Layer.");
+        else
+            System.out.println("There is " + numberOfNeuronsInLayer + " neuron in this Layer.");
 
-        System.out.println("----------------------------------------------");
+        int index = 0;
+        for (Neuron neuron: getListOfNeurons()) {
+            System.out.println("Neuron " + index + " :");
+            neuron.printNeuron();
+            index++;
+        }
+
     }
 }
